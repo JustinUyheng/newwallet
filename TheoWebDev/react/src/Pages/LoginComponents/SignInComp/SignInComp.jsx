@@ -23,15 +23,20 @@ const SignInComp = ({ navigateTo }) => {
    */
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent default form refresh
+    setErrors(null); // Clear previous errors
 
-    // Clear previous errors
-    setErrors(null);
+    const contactValue = contactNumberRef.current.value.trim();
+    const passwordValue = passwordRef.current.value.trim();
 
-    // Construct the payload.
-    // The 'identifier' will be the contact number, as it's the primary unique field for login.
+    // Frontend validation for required fields
+    if (!contactValue || !passwordValue) {
+      setErrors({ general: ['Contact number and password are required.'] });
+      return;
+    }
+
     const payload = {
-      identifier: contactNumberRef.current.value, // Using contact number as the primary identifier
-      password: passwordRef.current.value,
+      identifier: contactValue, // Using contact number as the primary identifier
+      password: passwordValue,
     };
 
     try {

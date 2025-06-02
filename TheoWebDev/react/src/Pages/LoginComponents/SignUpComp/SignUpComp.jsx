@@ -24,15 +24,33 @@ const SignUpComp = ({ navigateTo }) => {
    * @param {Event} e - The form submission event.
    */
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevent default form refresh
+    e.preventDefault();
+    setErrors(null); // Clear previous errors
 
-    // Construct the payload from ref values
+    const nameValue = nameRef.current.value.trim();
+    const emailValue = emailRef.current.value.trim();
+    const contactValue = contactNumberRef.current.value.trim(); // Get value from ref
+    const passwordValue = passwordRef.current.value.trim();
+    const confirmPasswordValue = confirmPassword.trim(); // Get from state
+
+    // Frontend validation for all fields
+    if (!nameValue || !emailValue || !contactValue || !passwordValue || !confirmPasswordValue) {
+      setErrors({ general: ['Please fill in all fields.'] });
+      return;
+    }
+
+    // Check if passwords match
+    if (passwordValue !== confirmPasswordValue) {
+      setErrors({ confirmPassword: ["Passwords do not match."] }); // More specific error
+      return;
+    }
+
     const payload = {
-      name: nameRef.current.value,
-      contact_number: contactNumberRef.current.value, // <--- This line is supposed to get the contact number
-      email: emailRef.current.value,
-      password: passwordRef.current.value,
-      password_confirmation: passwordRef.current.value, // Required for Laravel's 'confirmed' rule
+      name: nameValue,
+      contact_number: contactValue, // Use the value from the ref/state
+      email: emailValue,
+      password: passwordValue,
+      password_confirmation: confirmPasswordValue, // Use the trimmed state value
     };
 
     try {

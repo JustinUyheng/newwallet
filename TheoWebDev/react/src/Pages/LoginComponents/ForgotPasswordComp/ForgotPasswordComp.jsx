@@ -10,8 +10,25 @@ const ForgotPasswordComp = ({ navigateTo }) => {
   const [showConfirmNewPassword, setShowConfirmNewPassword] = useState(false);
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    alert(`Frontend Only - Forgot Password Attempt:\nEmail: ${email}\nNew Password: ${newPassword}`);
+      e.preventDefault();
+
+    // Check for empty fields
+    if (!email.trim() || !newPassword.trim() || !confirmNewPassword.trim()) {
+      alert('Please fill in all fields.');
+      return;
+    }
+
+    // Check if passwords match
+    if (newPassword !== confirmNewPassword) {
+      alert('New passwords do not match.');
+      return;
+    }
+
+    alert(`Frontend Only - Password Reset Attempt:\nEmail: ${email}\nNew Password: ${newPassword}`);
+    // Potentially clear fields or navigate after successful frontend "submission"
+    // setEmail('');
+    // setNewPassword('');
+    // setConfirmNewPassword('');
   };
 
   return (
