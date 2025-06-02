@@ -21,7 +21,7 @@ const ForgotPasswordComp = ({ navigateTo }) => {
 
       <form onSubmit={handleSubmit} className={styles.authForm}>
         <div className={styles.inputGroup}>
-          <Mail className={styles.inputIcon} />
+          <span className={styles.inputIcon}><Mail /></span>
           <input
             type="email"
             placeholder="Email Address"
@@ -32,7 +32,7 @@ const ForgotPasswordComp = ({ navigateTo }) => {
         </div>
 
         <div className={styles.inputGroup}>
-          <KeyRound className={styles.inputIcon} />
+          <span className={styles.inputIcon}><KeyRound /></span>
           <input
             type={showNewPassword ? 'text' : 'password'}
             placeholder="New Password"
@@ -51,7 +51,7 @@ const ForgotPasswordComp = ({ navigateTo }) => {
         </div>
 
         <div className={styles.inputGroup}>
-          <KeyRound className={styles.inputIcon} />
+          <span className={styles.inputIcon}><KeyRound /></span>
           <input
             type={showConfirmNewPassword ? 'text' : 'password'}
             placeholder="Confirm New Password"

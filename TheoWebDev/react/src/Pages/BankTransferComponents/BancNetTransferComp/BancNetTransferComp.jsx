@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './BancNetTransferComp.css';
 import '../GCashTransferComp/GcashTransferComp.css';
-
+import BankIcon from './bankIcon.png'
 
 function BancNetTransferComp() {
   const [accountNumber, setAccountNumber] = useState('');
@@ -48,7 +48,7 @@ function BancNetTransferComp() {
   return (
     <div className="transfer-section bancnet-section">
       <div className="section-header bancnet-header">
-        <img src="https://via.placeholder.com/40x40/D32F2F/FFFFFF?text=B" alt="BancNet Logo" className="logo" />
+        <img src={BankIcon} alt="BancNet Logo" className="logo" />
         <h2>Bank Transfer</h2>
       </div>
       <form onSubmit={handleTransfer}>

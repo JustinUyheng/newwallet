@@ -32,7 +32,14 @@ const monthlyData = [
   { name: 'Feb', progress: 25 },
   { name: 'Mar', progress: 10 },
   { name: 'Apr', progress: 80 },
-  { name: 'May', progress: 100 },
+  { name: 'May', progress: 60 },
+  { name: 'June', progress: 100 },
+  { name: 'July', progress: 95 },
+  { name: 'Aug', progress: 75 },
+  { name: 'Sep', progress: 10 },
+  { name: 'Oct', progress: 20 },
+  { name: 'Nov', progress: 5 },
+  { name: 'Dec', progress: 50 },
 ];
 
 function Progress() {
