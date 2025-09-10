@@ -36,7 +36,6 @@ const SignInComp = ({ navigateTo }) => {
 		};
 
 		try {
-			await axiosClient.get("/sanctum/csrf-cookie");
 			const { data } = await axiosClient.post("/login", payload);
 
 			localStorage.setItem("ACCESS_TOKEN", data.token);
