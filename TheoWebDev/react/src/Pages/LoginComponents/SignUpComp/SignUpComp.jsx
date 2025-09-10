@@ -60,7 +60,7 @@ const SignUpComp = ({ navigateTo }) => {
 		};
 
 		try {
-			await axiosClient.get("/sanctum/csrf-cookie");
+			// await axiosClient.get("/sanctum/csrf-cookie");
 			const { data } = await axiosClient.post("/register", payload);
 
 			// On successful registration, store the access token

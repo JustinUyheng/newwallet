@@ -17,7 +17,7 @@ const ForgotPasswordComp = ({ navigateTo }) => {
 		setErrors(null);
 		setMessage(null);
 		try {
-			await axiosClient.get("/sanctum/csrf-cookie");
+			// await axiosClient.get("/sanctum/csrf-cookie");
 			await axiosClient.post("/password/email", { email });
 			setMessage("Reset link sent. Check your email.");
 		} catch (err) {
