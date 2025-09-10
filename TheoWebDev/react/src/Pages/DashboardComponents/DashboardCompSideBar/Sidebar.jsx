@@ -1,74 +1,101 @@
-import React, { useState } from 'react';
-import styles from './sidebar.module.css'; // Use CSS module
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import styles from "./sidebar.module.css"; // Use CSS module
+import { useNavigate } from "react-router-dom";
+import axiosClient from "../../axios";
 
 const PopupSidebar = () => {
-  const navigate = useNavigate();   
-  const [isOpen, setIsOpen] = useState(false);
+	const navigate = useNavigate();
+	const [isOpen, setIsOpen] = useState(false);
+	const [user, setUser] = useState(null);
 
-  const toggleSidebar = () => {
-    setIsOpen(!isOpen);
-  };
+	useEffect(() => {
+		const loadUser = async () => {
+			try {
+				const { data } = await axiosClient.get("/api/user");
+				setUser(data);
+			} catch (e) {
+				navigate("/login");
+			}
+		};
+		loadUser();
+	}, [navigate]);
 
-  return (
-    <div className={styles.popupSidebarContainer}>
-      {!isOpen && (
-        <button
-          className={styles.toggleButton}
-          onClick={toggleSidebar}
-          aria-label="Open Sidebar"
-        >
-          <div className={styles.hamburgerIcon}>
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>
-        </button>
-      )}
+	const toggleSidebar = () => {
+		setIsOpen(!isOpen);
+	};
 
-      <aside className={`${styles.sidebar} ${isOpen ? styles.sidebarOpen : ''}`}>
-        <div className={styles.sidebarProfile}>
-          <div className={styles.profileIcon}>P</div>
-          <div className={styles.profileInfo}>
-            <h4>Profile</h4>
-          </div>
-        </div>
+	const handleLogout = async () => {
+		try {
+			await axiosClient.post("/logout");
+		} catch (_) {}
+		localStorage.removeItem("ACCESS_TOKEN");
+		localStorage.removeItem("user_id");
+		navigate("/login");
+	};
 
-        <div className={styles.sidebarWallet}>
-          <h2>WALLET</h2>
-        </div>
+	return (
+		<div className={styles.popupSidebarContainer}>
+			{!isOpen && (
+				<button
+					className={styles.toggleButton}
+					onClick={toggleSidebar}
+					aria-label="Open Sidebar"
+				>
+					<div className={styles.hamburgerIcon}>
+						<span></span>
+						<span></span>
+						<span></span>
+					</div>
+				</button>
+			)}
 
-        <div className={styles.sidebarContact}>
-          <p>
-            <strong>Contact Number</strong>
-            <br />
-            +63 912 345 6789
-          </p>
-          <p>
-            <strong>Email Address</strong>
-            <br />
-            user@example.com
-          </p>
-        </div>
+			<aside
+				className={`${styles.sidebar} ${isOpen ? styles.sidebarOpen : ""}`}
+			>
+				<div className={styles.sidebarProfile}>
+					<div className={styles.profileIcon}>P</div>
+					<div className={styles.profileInfo}>
+						<h4>Profile</h4>
+					</div>
+				</div>
 
-        <nav className={styles.sidebarNav}>
-          <ul>
-            <li>
-              <a href="/">Dashboard</a>
-            </li>
-            {/* Add other nav links here */}
-          </ul>
-        </nav>
+				<div className={styles.sidebarWallet}>
+					<h2>WALLET</h2>
+				</div>
 
-        <div className={styles.sidebarFooter}>
-          <button onClick={() => navigate('/feedback')}>Feedback</button>
-          <button onClick={() => navigate('/Login')}>Logout</button>
-        </div>
-      </aside>
+				<div className={styles.sidebarContact}>
+					<p>
+						<strong>Contact Number</strong>
+						<br />
+						{user?.contact_number || "-"}
+					</p>
+					<p>
+						<strong>Email Address</strong>
+						<br />
+						{user?.email || "-"}
+					</p>
+				</div>
 
-      {isOpen && <div className={styles.sidebarOverlay} onClick={toggleSidebar}></div>}
-    </div>
-  );
+				<nav className={styles.sidebarNav}>
+					<ul>
+						<li>
+							<a href="/">Dashboard</a>
+						</li>
+						{/* Add other nav links here */}
+					</ul>
+				</nav>
+
+				<div className={styles.sidebarFooter}>
+					<button onClick={() => navigate("/feedback")}>Feedback</button>
+					<button onClick={handleLogout}>Logout</button>
+				</div>
+			</aside>
+
+			{isOpen && (
+				<div className={styles.sidebarOverlay} onClick={toggleSidebar}></div>
+			)}
+		</div>
+	);
 };
 
 export default PopupSidebar;
