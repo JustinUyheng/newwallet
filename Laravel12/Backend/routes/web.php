@@ -22,14 +22,12 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// Route to get a token (if needed for CSRF or initial handshake, though often not strictly for stateless APIs)
+
 Route::get('/token', [UserController::class, 'token']);
-
-// User Registration Route
-// This route will handle new user sign-ups.
 Route::post('/register', [UserController::class, 'register']);
-
-// User Login Route
-// This route now points to the 'login' method in the UserController.
 Route::post('/login', [UserController::class, 'login']);
+Route::post('/logout', [UserController::class, 'logout'])->middleware('auth:sanctum');
+
+Route::post('/password/email', [UserController::class, 'sendPasswordResetLink']);
+Route::post('/password/reset', [UserController::class, 'resetPassword']);
 

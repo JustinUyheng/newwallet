@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Password;
 use Carbon\Carbon; // For date formatting
 use App\Models\Transaction;
 use App\Models\Product; // Make sure to import the Product model
@@ -263,6 +264,7 @@ class UserController extends Controller
         return response()->json([
             'token' => $token,
             'user_id' => $user->id, // Add this line to include the user's ID
+            'message' => 'Login successful'
         ]);
     }
 
@@ -426,6 +428,47 @@ class UserController extends Controller
             Log::error('Error fetching goals: ' . $e->getMessage());
             return response()->json(['message' => 'Failed to fetch goals.'], 500);
         }
+    }
+
+    public function sendPasswordResetLink(Request $request)
+    {
+        $request->validate(['email' => 'required|email']);
+        
+        $status = Password::sendResetLink($request->only('email'));
+        
+        return $status === Password::RESET_LINK_SENT
+            ? response()->json(['message' => 'Reset link sent'])
+            : response()->json(['message' => 'Unable to send reset link'], 400);
+    }
+
+    public function resetPassword(Request $request)
+    {
+        $request->validate([
+            'token' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|min:8|confirmed',
+        ]);
+
+        $status = Password::reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function ($user, $password) {
+                $user->forceFill(['password' => Hash::make($password)])->save();
+                $user->tokens()->delete(); // Revoke all tokens
+            }
+        );
+
+        return $status === Password::PASSWORD_RESET
+            ? response()->json(['message' => 'Password reset successfully'])
+            : response()->json(['message' => 'Unable to reset password'], 400);
+    }
+
+    public function logout(Request $request)
+    {
+        $user = $request->user();
+        if ($user && $user->currentAccessToken()) {
+            $user->currentAccessToken()->delete();
+        }
+        return response()->json(['message' => 'Logged out successfully']);
     }
 }
 
