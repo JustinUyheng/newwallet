@@ -23,3 +23,6 @@ Route::middleware('auth:sanctum')->post('/e-wallet/transfer', [UserController::c
 Route::middleware('auth:sanctum')->post('/goals', [UserController::class, 'storeGoal']); // Route to create a new goal
 Route::middleware('auth:sanctum')->get('/goals', [UserController::class, 'getUserGoals']); // Route to fetch all goals for the user
 
+Route::post('/register', [UserController::class, 'register']);
+Route::post('/login', [UserController::class, 'login']);
+Route::post('/logout', [UserController::class, 'logout'])->middleware('auth:sanctum');

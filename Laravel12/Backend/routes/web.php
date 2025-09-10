@@ -24,9 +24,6 @@ Route::get('/', function () {
 
 
 Route::get('/token', [UserController::class, 'token']);
-Route::post('/register', [UserController::class, 'register']);
-Route::post('/login', [UserController::class, 'login']);
-Route::post('/logout', [UserController::class, 'logout'])->middleware('auth:sanctum');
 
 Route::post('/password/email', [UserController::class, 'sendPasswordResetLink']);
 Route::post('/password/reset', [UserController::class, 'resetPassword']);
