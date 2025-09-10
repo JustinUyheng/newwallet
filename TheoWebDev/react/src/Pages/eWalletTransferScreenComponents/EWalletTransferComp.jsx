@@ -60,7 +60,7 @@ function EWalletTransferComp() {
 
 			// Send the money transfer request to the backend
 			// The endpoint is '/e-wallet/transfer' as defined in your api.php
-			const { data } = await axiosClient.post("api/e-wallet/transfer", payload);
+			const { data } = await axiosClient.post("/e-wallet/transfer", payload);
 
 			// On successful transfer
 			setMessage(data.message || "Money sent successfully!");

@@ -11,7 +11,7 @@ const PopupSidebar = () => {
 	useEffect(() => {
 		const loadUser = async () => {
 			try {
-				const { data } = await axiosClient.get("/api/user");
+				const { data } = await axiosClient.get("/user");
 				setUser(data);
 			} catch (e) {
 				navigate("/login");
